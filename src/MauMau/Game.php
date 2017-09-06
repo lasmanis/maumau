@@ -29,7 +29,7 @@
          */
         public function join(Player $player)
         {
-            if (count($this->players) < $this->rules::MAX_PLAYERS){
+            if (count($this->players) < $this->rules::MAX_PLAYERS) {
                 $this->players[] = $player;
                 return;
             }
@@ -45,7 +45,7 @@
          */
         public function start()
         {
-            if (!$this->rules->validateNumberOfPlayers(count($this->players))){
+            if (!$this->rules->validateNumberOfPlayers(count($this->players))) {
                 throw new \Exception('Not enough players');
             }
 
@@ -68,7 +68,7 @@
             foreach ($this->players as $player) {
                 $hand = new DeckOfCards($this->rules);
 
-                for ($i = 0; $i < $this->rules::HAND_SIZE; $i++){
+                for ($i = 0; $i < $this->rules::HAND_SIZE; $i++) {
                     try {
                         $hand->addCardOnTop($this->drawingStack->drawCardFromTop());
                     } catch (Exception $e) {
@@ -120,8 +120,8 @@
          */
         protected function gameLoop()
         {
-            while (!$this->weHaveAWinner()){
-                if ($this->drawingStack->isEmpty()){
+            while (!$this->weHaveAWinner()) {
+                if ($this->drawingStack->isEmpty()) {
                     $this->reshuffleDecks();
                 }
 
@@ -140,7 +140,7 @@
         protected function weHaveAWinner(): bool
         {
             foreach ($this->players as $player) {
-                if ($player->isWinner()){
+                if ($player->isWinner()) {
                     return true;
                 }
             }
@@ -179,7 +179,7 @@
          */
         protected function updatePlayerTurn()
         {
-            if ($this->rules::PLAY === 'CLOCKWISE'){
+            if ($this->rules::PLAY === 'CLOCKWISE') {
                 $this->activePlayerIndex = $this->activePlayerIndex > 0 ? $this->activePlayerIndex - 1 : count($this->players) - 1;
             } else {
                 $this->activePlayerIndex = $this->activePlayerIndex < count($this->players) - 1 ? $this->activePlayerIndex + 1 : 0;

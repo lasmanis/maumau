@@ -1,7 +1,7 @@
 <?php
     namespace MauMau;
 
-/**
+    /**
     * Card class
     */
     class Card
@@ -22,7 +22,7 @@
         {
             $this->rules = $rules;
 
-            if (!$this->rules->validateCard($suit, $name)){
+            if (!$this->rules->validateCard($suit, $name)) {
                 throw new \Exception('Invalid card');
             }
 

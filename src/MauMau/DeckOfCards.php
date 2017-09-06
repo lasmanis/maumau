@@ -89,7 +89,7 @@
          */
         public function drawCardFromTop(): Card
         {
-            if ($this->isEmpty()){
+            if ($this->isEmpty()) {
                 throw new \Exception('Cannot draw card. Stack is empty.');
             }
 
@@ -103,7 +103,7 @@
          */
         public function drawCardFromBottom(): Card
         {
-            if ($this->isEmpty()){
+            if ($this->isEmpty()) {
                 throw new \Exception('Cannot draw card. Stack is empty.');
             }
 
@@ -117,7 +117,7 @@
          */
         public function drawRandomCard(): Card
         {
-            if ($this->isEmpty()){
+            if ($this->isEmpty()) {
                 throw new \Exception('Cannot draw card. Stack is empty.');
             }
 

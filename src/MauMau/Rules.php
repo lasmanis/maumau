@@ -108,7 +108,7 @@
 
             // Check all the player's cards and compare them to the top card of the playing stack.
             foreach ($playersHandCards as $playersCard) {
-                if ($this->cardIsPlayable($playersCard, $topCard)){
+                if ($this->cardIsPlayable($playersCard, $topCard)) {
                     $playableCards->addCardOnTop($playersCard);
                 }
             }
@@ -127,7 +127,7 @@
         {
             foreach ($this->allowedMatches as $match) {
                 $method = 'get'.ucfirst($match);
-                if (method_exists($cardToTest, $method) && $cardToTest->{$method}() === $cardToCompare->{$method}()){
+                if (method_exists($cardToTest, $method) && $cardToTest->{$method}() === $cardToCompare->{$method}()) {
                     return true;
                 }
             }

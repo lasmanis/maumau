@@ -43,7 +43,7 @@
             // Ask the Rules for the list of cards that can be played
             $playableCards = $this->rules->pickPlayableCards($playingStack, $this->hand);
 
-            if (!$playableCards->isEmpty()){
+            if (!$playableCards->isEmpty()) {
                 // If there are cards to play, ask Strategy to pick the best card.
                 $card = $this->strategy->pickCard($playableCards);
 
@@ -81,9 +81,9 @@
         protected function extraAnnouncements()
         {
             $handCount = $this->hand->count();
-            if ($handCount === 1){
+            if ($handCount === 1) {
                 echo "$this->name has $handCount card".($handCount === 1 ? '' : 's')." remaining!\n";
-            } elseif ($handCount === 0){
+            } elseif ($handCount === 0) {
                 echo "$this->name has won!!\n";
             }
         }
