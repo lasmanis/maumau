@@ -123,7 +123,7 @@
         {
             $reshuffles = 0;
             $safety = 100;
-            $rounds = 0;
+            $rounds = 1;
             $plays = 0;
             $players = count($this->players);
             while (!$this->weHaveAWinner() && $rounds < $safety) {
