@@ -1,13 +1,14 @@
 <?php
     namespace MauMau;
 
-    /**
+/**
     * DeckOfCards class.
     */
-    class DeckOfCards
+    class DeckOfCards implements \Countable, \Iterator
     {
         private $cards = [];
         private $rules;
+        private $position = 0;
 
         public function __construct(Rules $rules)
         {
@@ -124,6 +125,7 @@
             $indexOfCard = array_rand($this->cards);
             $card = $this->cards[$indexOfCard];
             unset($this->cards[$indexOfCard]);
+            $this->cards = array_values($this->cards);
 
             return $card;
         }
@@ -137,6 +139,7 @@
         {
             if (($indexOfCard = array_search($card, $this->cards)) !== false) {
                 unset($this->cards[$indexOfCard]);
+                $this->cards = array_values($this->cards);
                 return;
             }
 
@@ -160,7 +163,7 @@
          */
         public function __toString(): string
         {
-            return $this->isEmpty() ? 'No more cards' : implode(' ', $this->cards);
+            return $this->isEmpty() ? 'No cards' : implode(' ', $this->cards);
         }
 
         /**
@@ -171,5 +174,55 @@
         public function count(): int
         {
             return count($this->cards);
+        }
+
+        /**
+         * Sets iterator back to start.
+         *
+         * @return void
+         */
+        public function rewind()
+        {
+            $this->position = 0;
+        }
+
+        /**
+         * Returns the current card.
+         *
+         * @return Card
+         */
+        public function current(): Card
+        {
+            return $this->cards[$this->position];
+        }
+
+        /**
+         * Returns the current position of the iterator.
+         *
+         * @return int
+         */
+        public function key(): int
+        {
+            return $this->position;
+        }
+
+        /**
+         * Moves the iterator forward.
+         *
+         * @return void
+         */
+        public function next()
+        {
+            ++$this->position;
+        }
+
+        /**
+         * Checks if current position is valid.
+         *
+         * @return bool
+         */
+        public function valid(): bool
+        {
+            return isset($this->cards[$this->position]);
         }
     }

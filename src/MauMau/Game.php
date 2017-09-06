@@ -120,16 +120,26 @@
          */
         protected function gameLoop()
         {
-            while (!$this->weHaveAWinner()) {
+            $safety = 1000;
+            $reshuffles = 0;
+            $round = 0;
+            while (!$this->weHaveAWinner() && $round < $safety) {
                 if ($this->drawingStack->isEmpty()) {
                     $this->reshuffleDecks();
+                    $reshuffles++;
                 }
 
                 $this->players[$this->activePlayerIndex]->play($this->playingStack, $this->drawingStack);
                 $this->updatePlayerTurn();
 
-                usleep(750000);
+                $this->checkCheats();
+
+                usleep(25000);
+                $round++;
             }
+
+            echo "Game concluded after $round rounds\n";
+            echo $reshuffles . ' reshuffle' . ($reshuffles === 1 ? '' : 's') . " necessary\n";
         }
 
         /**
@@ -168,8 +178,8 @@
             $newPlayingStack->addCardOnTop($topCard);
             $this->playingStack = $newPlayingStack;
 
-            echo "Playing stack now has " . $this->playingStack->count() . " cards.\n";
-            echo "Drawing stack now has " . $this->drawingStack->count() . " cards.\n";
+            echo "Playing stack now has " . count($this->playingStack) . " cards.\n";
+            echo "Drawing stack now has " . count($this->drawingStack) . " cards.\n";
         }
 
         /**
@@ -183,6 +193,18 @@
                 $this->activePlayerIndex = $this->activePlayerIndex > 0 ? $this->activePlayerIndex - 1 : count($this->players) - 1;
             } else {
                 $this->activePlayerIndex = $this->activePlayerIndex < count($this->players) - 1 ? $this->activePlayerIndex + 1 : 0;
+            }
+        }
+
+        protected function checkCheats()
+        {
+            $totalCards = count($this->playingStack) + count($this->drawingStack);
+            foreach ($this->players as $player) {
+                $totalCards += count($player->getHand());
+            }
+
+            if ($totalCards !== $this->rules->deckSize()){
+                throw new Exception("Someone is cheating!!");
             }
         }
     }

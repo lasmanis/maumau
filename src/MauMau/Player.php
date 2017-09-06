@@ -43,16 +43,18 @@
             // Ask the Rules for the list of cards that can be played
             $playableCards = $this->rules->pickPlayableCards($playingStack, $this->hand);
 
+            echo "Possible matches for $this->name are $playableCards\n";
+
             if (!$playableCards->isEmpty()) {
                 // If there are cards to play, ask Strategy to pick the best card.
-                $card = $this->strategy->pickCard($playableCards);
+                $card = $this->strategy->pickCard($playableCards, $this->hand);
 
                 // Then play the card
-                $this->hand->removeCard($card);
                 $playingStack->addCardOnTop($card);
 
                 // and tell the world about it
-                echo "$this->name plays $card.\n";
+                echo "$this->name plays $card\n";
+                echo "$this->name now is left with $this->hand\n";
                 $this->extraAnnouncements();
             } else {
                 // If there are no playable cards, draw a new card and add it to the hand
@@ -60,6 +62,7 @@
                 $this->hand->addCardOnTop($newCard);
 
                 echo "$this->name has no suitable cards to play. Drawing from deck: $newCard\n";
+                echo "$this->name now is left with $this->hand\n";
             }
         }
 
@@ -80,12 +83,22 @@
          */
         protected function extraAnnouncements()
         {
-            $handCount = $this->hand->count();
+            $handCount = count($this->hand);
             if ($handCount === 1) {
                 echo "$this->name has $handCount card".($handCount === 1 ? '' : 's')." remaining!\n";
             } elseif ($handCount === 0) {
                 echo "$this->name has won!!\n";
             }
+        }
+
+        /**
+         * Returns player's hand
+         *
+         * @return DeckOfCards
+         */
+        public function getHand(): DeckOfCards
+        {
+            return $this->hand;
         }
 
         /**

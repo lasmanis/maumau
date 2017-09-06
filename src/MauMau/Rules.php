@@ -94,22 +94,22 @@
          * and the players hand, and, of course, the rules.
          *
          * @param DeckOfCards $playingStack
-         * @param DeckOfCards $playersHand
+         * @param DeckOfCards $playerHand
          * @return DeckOfCards
          */
-        public function pickPlayableCards(DeckOfCards $playingStack, DeckOfCards $playersHand): DeckOfCards
+        public function pickPlayableCards(DeckOfCards $playingStack, DeckOfCards $playerHand): DeckOfCards
         {
             $playableCards = new DeckOfCards($this);
 
             $playingStackCards = $playingStack->getCards();
-            $playersHandCards = $playersHand->getCards();
+            $playerHandCards = $playerHand->getCards();
 
             $topCard = $playingStackCards[0];
 
             // Check all the player's cards and compare them to the top card of the playing stack.
-            foreach ($playersHandCards as $playersCard) {
-                if ($this->cardIsPlayable($playersCard, $topCard)) {
-                    $playableCards->addCardOnTop($playersCard);
+            foreach ($playerHand as $playerCard) {
+                if ($this->cardsMatch($playerCard, $topCard)) {
+                    $playableCards->addCardOnTop($playerCard);
                 }
             }
 
@@ -123,7 +123,7 @@
          * @param Card $cardToCompare
          * @return bool
          */
-        protected function cardIsPlayable(Card $cardToTest, Card $cardToCompare): bool
+        public function cardsMatch(Card $cardToTest, Card $cardToCompare): bool
         {
             foreach ($this->allowedMatches as $match) {
                 $method = 'get'.ucfirst($match);
