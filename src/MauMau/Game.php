@@ -11,6 +11,7 @@
         private $drawingStack;
         private $playingStack;
         private $activePlayerIndex;
+        private $round = 0;
 
         public function __construct(Rules $rules, DeckOfCards $deck)
         {
@@ -120,10 +121,12 @@
          */
         protected function gameLoop()
         {
-            $safety = 1000;
             $reshuffles = 0;
-            $round = 0;
-            while (!$this->weHaveAWinner() && $round < $safety) {
+            $safety = 100;
+            $rounds = 0;
+            $plays = 0;
+            $players = count($this->players);
+            while (!$this->weHaveAWinner() && $rounds < $safety) {
                 if ($this->drawingStack->isEmpty()) {
                     $this->reshuffleDecks();
                     $reshuffles++;
@@ -135,10 +138,13 @@
                 $this->checkCheats();
 
                 usleep(25000);
-                $round++;
+                $plays++;
+                if ($plays % $players === 0){
+                    $rounds++;
+                }
             }
 
-            echo "Game concluded after $round rounds\n";
+            echo "Game concluded after $rounds rounds\n";
             echo $reshuffles . ' reshuffle' . ($reshuffles === 1 ? '' : 's') . " necessary\n";
         }
 

@@ -43,8 +43,6 @@
             // Ask the Rules for the list of cards that can be played
             $playableCards = $this->rules->pickPlayableCards($playingStack, $this->hand);
 
-            echo "Possible matches for $this->name are $playableCards\n";
-
             if (!$playableCards->isEmpty()) {
                 // If there are cards to play, ask Strategy to pick the best card.
                 $card = $this->strategy->pickCard($playableCards, $this->hand);
@@ -54,7 +52,6 @@
 
                 // and tell the world about it
                 echo "$this->name plays $card\n";
-                echo "$this->name now is left with $this->hand\n";
                 $this->extraAnnouncements();
             } else {
                 // If there are no playable cards, draw a new card and add it to the hand
@@ -62,7 +59,6 @@
                 $this->hand->addCardOnTop($newCard);
 
                 echo "$this->name has no suitable cards to play. Drawing from deck: $newCard\n";
-                echo "$this->name now is left with $this->hand\n";
             }
         }
 
@@ -87,7 +83,7 @@
             if ($handCount === 1) {
                 echo "$this->name has $handCount card".($handCount === 1 ? '' : 's')." remaining!\n";
             } elseif ($handCount === 0) {
-                echo "$this->name has won!!\n";
+                echo "\n$this->name has won!!\n\n";
             }
         }
 
