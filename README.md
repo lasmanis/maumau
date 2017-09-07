@@ -8,3 +8,7 @@
 ### How do I get set up? ###
 
 * Just run the htdocs/index.php file trough the command line
+
+### Requirements ###
+
+* Tested with PHP 7.1.9
