@@ -65,27 +65,6 @@
         abstract protected function gameShouldContinue(): bool;
 
         /**
-         * Handles the core logic of the game and runs the game until it's finished.
-         *
-         * @return void
-         */
-        final protected function startGameLoop()
-        {
-            $players = count($this->players);
-            while ($this->gameShouldContinue()) {
-                $this->turnStarted();
-
-                $this->players[$this->activePlayerIndex]->play($this);
-
-                $this->setNextPlayer();
-
-                $this->turnFinished();
-            }
-
-            $this->gameFinished();
-        }
-
-        /**
          * The class constructor.
          *
          * @param AbstractRules $rules
@@ -137,6 +116,27 @@
         public function getPlayingStack(): DeckOfCards
         {
             return $this->playingStack;
+        }
+
+        /**
+         * Handles the core logic of the game and runs the game until it's finished.
+         *
+         * @return void
+         */
+        final protected function startGameLoop()
+        {
+            $players = count($this->players);
+            while ($this->gameShouldContinue()) {
+                $this->turnStarted();
+
+                $this->players[$this->activePlayerIndex]->play($this);
+
+                $this->setNextPlayer();
+
+                $this->turnFinished();
+            }
+
+            $this->gameFinished();
         }
 
         /**

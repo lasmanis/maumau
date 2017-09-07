@@ -1,7 +1,6 @@
 <?php
     namespace MauMau\CardGame\MauMau;
 
-    use MauMau\CardGame\Card;
     use MauMau\CardGame\DeckOfCards;
     use MauMau\CardGame\AbstractRules;
     use MauMau\CardGame\PlayerStrategyInterface;
@@ -19,11 +18,11 @@
         }
 
         /**
-         * Selects the best card to play.
+         * Selects the best card(s) to play.
          *
          * @param DeckOfCards $playableCards
          * @param DeckOfCards $playerHand
-         * @return Card
+         * @return DeckOfCards
          */
         public function pickCard(DeckOfCards $playableCards, DeckOfCards $playerHand): DeckOfCards
         {

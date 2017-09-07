@@ -2,10 +2,8 @@
     namespace MauMau\CardGame\MauMau;
 
     use MauMau\CardGame\AbstractGame;
-    use MauMau\CardGame\AbstractRules;
     use MauMau\CardGame\DeckOfCards;
     use MauMau\CardGame\PlayerInterface;
-    use MauMau\Generic\DisplayInterface;
 
     /**
     * Game class.
