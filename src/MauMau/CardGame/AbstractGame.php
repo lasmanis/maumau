@@ -145,8 +145,17 @@
          * @throws Exception if there are not enough players
          * @return void
          */
-        final public function start()
+        final public function start(array $players)
         {
+            foreach ($players as $player) {
+                try {
+                    $this->join($player);
+                    $this->display->message($player . ' joined.');
+                } catch (\Exception $e) {
+                    $this->display->message($player . ' could not join game. Reason: ' . $e->getMessage());
+                }
+            }
+
             if (!$this->rules->validateNumberOfPlayers(count($this->players))) {
                 throw new \Exception('Not enough players');
             }
