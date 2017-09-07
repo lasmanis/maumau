@@ -10,12 +10,14 @@
         private $name;
         private $rules;
         private $strategy;
+        private $display;
 
-        public function __construct(string $name, Rules $rules, PlayerStrategy $strategy)
+        public function __construct(string $name, Rules $rules, PlayerStrategy $strategy, Display $display)
         {
             $this->name = $name;
             $this->rules = $rules;
             $this->strategy = $strategy;
+            $this->display = $display;
         }
 
         /**
@@ -28,7 +30,7 @@
         {
             $this->hand = $hand;
 
-            echo $this->name . ' has been dealt: ' . $this->hand . "\n";
+            $this->display->message($this->name . ' has been dealt: ' . $this->hand . "");
         }
 
         /**
@@ -51,14 +53,14 @@
                 $playingStack->addCardOnTop($card);
 
                 // and tell the world about it
-                echo "$this->name plays $card\n";
+                $this->display->message("$this->name plays $card");
                 $this->extraAnnouncements();
             } else {
                 // If there are no playable cards, draw a new card and add it to the hand
                 $newCard = $drawingStack->drawCardFromTop();
                 $this->hand->addCardOnTop($newCard);
 
-                echo "$this->name has no suitable cards to play. Drawing from deck: $newCard\n";
+                $this->display->message("$this->name has no suitable cards to play. Drawing from deck: $newCard");
             }
         }
 
@@ -81,9 +83,9 @@
         {
             $handCount = count($this->hand);
             if ($handCount === 1) {
-                echo "$this->name has $handCount card".($handCount === 1 ? '' : 's')." remaining!\n";
+                $this->display->message("$this->name has $handCount card".($handCount === 1 ? '' : 's')." remaining!");
             } elseif ($handCount === 0) {
-                echo "\n$this->name has won!!\n\n";
+                $this->display->message("\n$this->name has won!!\n");
             }
         }
 

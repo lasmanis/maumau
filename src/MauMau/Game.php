@@ -6,19 +6,21 @@
     */
     class Game
     {
-        private $players;
         private $rules;
         private $drawingStack;
         private $playingStack;
+        private $display;
+        private $players;
         private $activePlayerIndex;
         private $round = 0;
 
-        public function __construct(Rules $rules, DeckOfCards $deck)
+        public function __construct(Rules $rules, DeckOfCards $deck, Display $display)
         {
             $this->rules = $rules;
             $this->drawingStack = $deck;
+            $this->display = $display;
 
-            echo 'Starting new game...' . PHP_EOL;
+            $this->display->message('Starting new game...');
         }
 
         /**
@@ -65,7 +67,7 @@
          */
         protected function deal()
         {
-            echo "Deal has started...\n";
+            $this->display->message("Deal has started...");
             foreach ($this->players as $player) {
                 $hand = new DeckOfCards($this->rules);
 
@@ -98,7 +100,7 @@
 
             $this->playingStack->addCardOnTop($topCard);
 
-            echo "Top card is: $topCard\n";
+            $this->display->message("Top card is: $topCard");
         }
 
         /**
@@ -111,7 +113,7 @@
             $this->activePlayerIndex = array_rand($this->players);
             $player = $this->players[$this->activePlayerIndex];
 
-            echo "$player was selected to start first!\n";
+            $this->display->message("$player was selected to start first!");
         }
 
         /**
@@ -147,13 +149,13 @@
             }
 
             if (!$this->weHaveAWinner()) {
-                echo "This is taking too long. Let's start a new game!\n";
+                $this->display->message("This is taking too long. Let's start a new game!");
             } else {
-                echo "Game concluded after $rounds rounds\n";
+                $this->display->message("Game concluded after $rounds rounds");
             }
 
             if ($reshuffles > 0) {
-                echo $reshuffles . ' reshuffle' . ($reshuffles === 1 ? '' : 's') . " necessary\n";
+                $this->display->message($reshuffles . ' reshuffle' . ($reshuffles === 1 ? '' : 's') . " necessary");
             }
         }
 
@@ -180,7 +182,7 @@
          */
         protected function reshuffleDecks()
         {
-            echo "Reshuffling the decks\n";
+            $this->display->message("Reshuffling the decks");
             // First draw the top card from the Playing Stack
             $topCard = $this->playingStack->drawCardFromTop();
 
@@ -193,8 +195,8 @@
             $newPlayingStack->addCardOnTop($topCard);
             $this->playingStack = $newPlayingStack;
 
-            echo "Playing stack now has " . count($this->playingStack) . " cards.\n";
-            echo "Drawing stack now has " . count($this->drawingStack) . " cards.\n";
+            $this->display->message("Playing stack now has " . count($this->playingStack) . " cards.");
+            $this->display->message("Drawing stack now has " . count($this->drawingStack) . " cards.");
         }
 
         /**
