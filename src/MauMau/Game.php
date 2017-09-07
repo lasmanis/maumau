@@ -138,14 +138,23 @@
                 $this->checkCheats();
 
                 usleep(25000);
+
+                // Some basic stats
                 $plays++;
                 if ($plays % $players === 0){
                     $rounds++;
                 }
             }
 
-            echo "Game concluded after $rounds rounds\n";
-            echo $reshuffles . ' reshuffle' . ($reshuffles === 1 ? '' : 's') . " necessary\n";
+            if (!$this->weHaveAWinner()) {
+                echo "This is taking too long. Let's start a new game!\n";
+            } else {
+                echo "Game concluded after $rounds rounds\n";
+            }
+
+            if ($reshuffles > 0) {
+                echo $reshuffles . ' reshuffle' . ($reshuffles === 1 ? '' : 's') . " necessary\n";
+            }
         }
 
         /**
