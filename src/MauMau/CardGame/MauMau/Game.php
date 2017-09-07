@@ -128,7 +128,7 @@
             usleep(50000);
 
             $this->plays++;
-            if ($this->plays % count($this->players) === 0){
+            if ($this->plays % count($this->players) === 0) {
                 $this->rounds++;
             }
         }
@@ -232,7 +232,7 @@
                 $totalCards += count($player->getHand());
             }
 
-            if ($totalCards !== $this->rules->deckSize()){
+            if ($totalCards !== $this->rules->deckSize()) {
                 throw new \Exception("Someone is cheating!!");
             }
         }

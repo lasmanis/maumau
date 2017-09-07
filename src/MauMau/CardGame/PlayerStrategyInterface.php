@@ -1,7 +1,7 @@
 <?php
     namespace MauMau\CardGame;
 
-    /**
+	/**
     * PlayerStrategy interface
     */
     interface PlayerStrategyInterface
