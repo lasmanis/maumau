@@ -2,62 +2,41 @@
     namespace MauMau\CardGame\MauMau;
 
     use MauMau\CardGame\DeckOfCards;
-    use MauMau\CardGame\AbstractRules;
-    use MauMau\Generic\DisplayInterface;
+    use MauMau\CardGame\AbstractPlayer;
+    use MauMau\CardGame\AbstractGame;
 
     /**
     * Player class.
     */
-    class Player
+    class Player extends AbstractPlayer
     {
-        private $hand;
-        private $name;
-        private $rules;
-        private $strategy;
-        private $display;
-
-        public function __construct(string $name, AbstractRules $rules, PlayerStrategy $strategy, DisplayInterface $display)
-        {
-            $this->name = $name;
-            $this->rules = $rules;
-            $this->strategy = $strategy;
-            $this->display = $display;
-        }
-
-        /**
-         * Sets the player's hand.
-         *
-         * @param DeckOfCards $hand
-         * @return void
-         */
-        public function deal(DeckOfCards $hand)
-        {
-            $this->hand = $hand;
-
-            $this->display->message($this->name . ' has been dealt: ' . $this->hand . "");
-        }
-
         /**
          * Places an appropriate card from the player's hand to the playing stack.
          *
-         * @param DeckOfCards $playingStack
-         * @param DeckOfCards $drawingStack
+         * @param AbstractGame $game
          * @return void
          */
-        public function play(DeckOfCards $playingStack, DeckOfCards $drawingStack)
+        public function play(AbstractGame $game)
         {
+            $drawingStack = $game->getDrawingStack();
+            $playingStack = $game->getPlayingStack();
+
             // Ask the Rules for the list of cards that can be played
             $playableCards = $this->rules->pickPlayableCards($playingStack, $this->hand);
 
             if (!$playableCards->isEmpty()) {
                 // If there are cards to play, ask Strategy to pick the best card.
-                $card = $this->strategy->pickCard($playableCards, $this->hand);
+                $bestCards = $this->strategy->pickCard($playableCards, $this->hand);
 
                 // Then play the card
-                $playingStack->addCardOnTop($card);
+                $message = "$this->name plays";
+                foreach ($bestCards as $card) {
+                    $playingStack->addCardOnTop($card);
+                    $message .= ' ' . $card;
+                }
 
                 // and tell the world about it
-                $this->display->message("$this->name plays $card");
+                $this->display->message($message);
                 $this->extraAnnouncements();
             } else {
                 // If there are no playable cards, draw a new card and add it to the hand
@@ -85,31 +64,14 @@
          */
         protected function extraAnnouncements()
         {
+            if ($this->isWinner()) {
+                $this->display->message("\n$this->name has won!!\n");
+                return;
+            }
+
             $handCount = count($this->hand);
             if ($handCount === 1) {
-                $this->display->message("$this->name has $handCount card".($handCount === 1 ? '' : 's')." remaining!");
-            } elseif ($handCount === 0) {
-                $this->display->message("\n$this->name has won!!\n");
+                $this->display->message("$this->name has $handCount card remaining!");
             }
-        }
-
-        /**
-         * Returns player's hand
-         *
-         * @return DeckOfCards
-         */
-        public function getHand(): DeckOfCards
-        {
-            return $this->hand;
-        }
-
-        /**
-         * Returns player's name.
-         *
-         * @return string
-         */
-        public function __toString(): string
-        {
-            return $this->name;
         }
     }
