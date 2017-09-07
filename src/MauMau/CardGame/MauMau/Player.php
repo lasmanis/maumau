@@ -43,7 +43,7 @@
                 $newCard = $drawingStack->drawCardFromTop();
                 $this->hand->addCardOnTop($newCard);
 
-                $this->display->message("$this->name has no suitable cards to play. Drawing from deck: $newCard");
+                $this->display->message("$this->name does not have a suitable card, taking from deck: $newCard");
             }
         }
 
