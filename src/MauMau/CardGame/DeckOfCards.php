@@ -1,16 +1,16 @@
 <?php
-    namespace MauMau;
+    namespace MauMau\CardGame;
 
-/**
+    /**
     * DeckOfCards class.
     */
     class DeckOfCards implements \Countable, \Iterator
     {
-        private $cards = [];
-        private $rules;
-        private $position = 0;
+        protected $cards = [];
+        protected $rules;
+        protected $position = 0;
 
-        public function __construct(Rules $rules)
+        public function __construct(AbstractRules $rules)
         {
             $this->rules = $rules;
         }
@@ -27,6 +27,12 @@
             foreach ($this->rules->getAllowedSuits() as $suite) {
                 foreach ($this->rules->getAllowedNames() as $name) {
                     $this->cards[] = new Card($suite, $name, $this->rules);
+                }
+            }
+
+            if ($this->rules->jokersAllowed() > 0) {
+                for ($i = 0; $i < $this->rules->jokersAllowed(); $i++) {
+                    $this->cards[] = new Card('', 'Joker', $this->rules);
                 }
             }
         }
@@ -157,16 +163,6 @@
         }
 
         /**
-         * Returns the full deck in one row.
-         *
-         * @return string
-         */
-        public function __toString(): string
-        {
-            return $this->isEmpty() ? 'No cards' : implode(' ', $this->cards);
-        }
-
-        /**
          * Returns the number of cards in the deck.
          *
          * @return int
@@ -224,5 +220,15 @@
         public function valid(): bool
         {
             return isset($this->cards[$this->position]);
+        }
+
+        /**
+         * Returns the full deck in one row.
+         *
+         * @return string
+         */
+        public function __toString(): string
+        {
+            return $this->isEmpty() ? 'No cards' : implode(' ', $this->cards);
         }
     }

@@ -1,14 +1,19 @@
 <?php
-    namespace MauMau;
+    namespace MauMau\CardGame\MauMau;
+
+    use MauMau\CardGame\Card;
+    use MauMau\CardGame\DeckOfCards;
+    use MauMau\CardGame\AbstractRules;
+    use MauMau\CardGame\PlayerStrategyInterface;
 
     /**
     * PlayerStrategy class
     */
-    class PlayerStrategy
+    class PlayerStrategy implements PlayerStrategyInterface
     {
-        private $rules;
+        protected $rules;
 
-        public function __construct(Rules $rules)
+        public function __construct(AbstractRules $rules)
         {
             $this->rules = $rules;
         }
@@ -20,7 +25,7 @@
          * @param DeckOfCards $playerHand
          * @return Card
          */
-        public function pickCard(DeckOfCards $playableCards, DeckOfCards $playerHand): Card
+        public function pickCard(DeckOfCards $playableCards, DeckOfCards $playerHand): DeckOfCards
         {
             // how many matches does each card have?
             // Choose the one with the most matches
@@ -43,6 +48,9 @@
 
             $playerHand->removeCard($cardWithMaxMatches);
 
-            return $cardWithMaxMatches;
+            $newDeck = new DeckOfCards($this->rules);
+            $newDeck->addCardOnTop($cardWithMaxMatches);
+
+            return $newDeck;
         }
     }

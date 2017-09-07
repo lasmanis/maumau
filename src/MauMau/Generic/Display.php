@@ -1,10 +1,10 @@
 <?php
-    namespace MauMau;
+    namespace MauMau\Generic;
 
     /**
     * Display class.
     */
-    class Display
+    class Display implements DisplayInterface
     {
         /**
          * Prints a message.

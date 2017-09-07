@@ -1,27 +1,21 @@
 <?php
-    namespace MauMau;
+    namespace MauMau\CardGame\MauMau;
+
+    use MauMau\CardGame\AbstractGame;
+    use MauMau\CardGame\AbstractRules;
+    use MauMau\CardGame\DeckOfCards;
+    use MauMau\CardGame\PlayerInterface;
+    use MauMau\Generic\DisplayInterface;
 
     /**
     * Game class.
     */
-    class Game
+    class Game extends AbstractGame
     {
-        private $rules;
-        private $drawingStack;
-        private $playingStack;
-        private $display;
-        private $players;
-        private $activePlayerIndex;
-        private $round = 0;
-
-        public function __construct(Rules $rules, DeckOfCards $deck, Display $display)
-        {
-            $this->rules = $rules;
-            $this->drawingStack = $deck;
-            $this->display = $display;
-
-            $this->display->message('Starting new game...');
-        }
+        private $rounds = 0;
+        private $plays = 0;
+        private $reshuffles = 0;
+        private $safety = 100;
 
         /**
          * Adds a player to the players array.
@@ -30,7 +24,7 @@
          * @throws Exception If max number of players is reached.
          * @return void
          */
-        public function join(Player $player)
+        public function join(PlayerInterface $player)
         {
             if (count($this->players) < $this->rules->getMaxPlayers()) {
                 $this->players[] = $player;
@@ -41,22 +35,15 @@
         }
 
         /**
-         * Starts the game
+         * Perform any environment initializations needed.
          *
-         * @throws Exception if there are not enough players
          * @return void
          */
-        public function start()
+        protected function initEnvironment()
         {
-            if (!$this->rules->validateNumberOfPlayers(count($this->players))) {
-                throw new \Exception('Not enough players');
-            }
-
             $this->deal();
             $this->setPlayingStack();
             $this->pickFirstPlayer();
-
-            $this->gameLoop();
         }
 
         /**
@@ -74,8 +61,8 @@
                 for ($i = 0; $i < $this->rules->getHandSize(); $i++) {
                     try {
                         $hand->addCardOnTop($this->drawingStack->drawCardFromTop());
-                    } catch (Exception $e) {
-                        throw new Exception("Could not deal for player " . $player . ". " . $e->getMessage());
+                    } catch (\Exception $e) {
+                        throw new \Exception("Could not deal for player " . $player . ". " . $e->getMessage());
                     }
                 }
 
@@ -94,8 +81,8 @@
             $this->playingStack = new DeckOfCards($this->rules);
             try {
                 $topCard = $this->drawingStack->drawCardFromTop();
-            } catch (Exception $e) {
-                throw new Exception("Not enough cards left.");
+            } catch (\Exception $e) {
+                throw new \Exception("Not enough cards left.");
             }
 
             $this->playingStack->addCardOnTop($topCard);
@@ -117,46 +104,71 @@
         }
 
         /**
-         * Handles the core logic of the game and runs the game until it's finished.
+         * Allows the concrete game to perform any logic upon the start of a turn.
          *
          * @return void
          */
-        protected function gameLoop()
+        protected function turnStarted()
         {
-            $reshuffles = 0;
-            $safety = 100;
-            $rounds = 1;
-            $plays = 0;
-            $players = count($this->players);
-            while (!$this->weHaveAWinner() && $rounds < $safety) {
-                if ($this->drawingStack->isEmpty()) {
-                    $this->reshuffleDecks();
-                    $reshuffles++;
-                }
-
-                $this->players[$this->activePlayerIndex]->play($this->playingStack, $this->drawingStack);
-                $this->updatePlayerTurn();
-
-                $this->checkCheats();
-
-                usleep(50000);
-
-                // Some basic stats
-                $plays++;
-                if ($plays % $players === 0){
-                    $rounds++;
-                }
+            if ($this->drawingStack->isEmpty()) {
+                $this->reshuffleDecks();
+                $this->reshuffles++;
             }
+        }
 
+        /**
+         * Allows the concrete game to perform any logic upon the end of a turn.
+         *
+         * @return void
+         */
+        protected function turnFinished()
+        {
+            $this->checkCheats();
+
+            usleep(50000);
+
+            $this->plays++;
+            if ($this->plays % count($this->players) === 0){
+                $this->rounds++;
+            }
+        }
+
+        /**
+         * Allows the concrete game to perform any logic upon the start of a game.
+         *
+         * @return void
+         */
+        protected function gameStarted()
+        {
+            $this->display->message('Starting new game...');
+        }
+
+        /**
+         * Allows the concrete game to perform any logic upon the end of a game.
+         *
+         * @return void
+         */
+        protected function gameFinished()
+        {
             if (!$this->weHaveAWinner()) {
                 $this->display->message("This is taking too long. Let's start a new game!");
             } else {
-                $this->display->message("Game concluded after $rounds rounds");
+                $this->display->message("Game concluded after $this->rounds rounds");
             }
 
-            if ($reshuffles > 0) {
-                $this->display->message($reshuffles . ' reshuffle' . ($reshuffles === 1 ? '' : 's') . " necessary");
+            if ($this->reshuffles > 0) {
+                $this->display->message($this->reshuffles . ' reshuffle' . ($this->reshuffles === 1 ? '' : 's') . " necessary");
             }
+        }
+
+        /**
+         * Checks if the game should continue for another turn, or it should stop.
+         *
+         * @return bool
+         */
+        protected function gameShouldContinue(): bool
+        {
+            return !$this->weHaveAWinner() && $this->rounds < $this->safety;
         }
 
         /**
@@ -200,11 +212,11 @@
         }
 
         /**
-         * Update player turn.
+         * Updates player turn.
          *
          * @return void
          */
-        protected function updatePlayerTurn()
+        protected function setNextPlayer()
         {
             if ($this->rules->getPlay() === 'clockwise') {
                 $this->activePlayerIndex = $this->activePlayerIndex > 0 ? $this->activePlayerIndex - 1 : count($this->players) - 1;
@@ -221,7 +233,7 @@
             }
 
             if ($totalCards !== $this->rules->deckSize()){
-                throw new Exception("Someone is cheating!!");
+                throw new \Exception("Someone is cheating!!");
             }
         }
     }
