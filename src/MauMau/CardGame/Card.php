@@ -1,14 +1,18 @@
 <?php
-    namespace MauMau;
+    namespace MauMau\CardGame;
+
+    use MauMau\CardGame\AbstractRules;
 
     /**
     * Card class
     */
     class Card
     {
-        private $rules;
-        private $suit;
-        private $name;
+        protected $rules;
+        protected $suit;
+        protected $name;
+        protected $color;
+        protected $value;
 
         /**
          * Creates a new card.
@@ -18,7 +22,7 @@
          * @throws InvalidCardException
          * @return Card
          */
-        public function __construct(string $suit, string $name, Rules $rules)
+        public function __construct(string $suit, string $name, AbstractRules $rules)
         {
             $this->rules = $rules;
 
@@ -28,6 +32,8 @@
 
             $this->suit = $suit;
             $this->name = $name;
+            $this->value = $this->rules->cardValue($this);
+            $this->color = $this->rules->cardColor($this);
         }
 
         /**
@@ -37,7 +43,7 @@
          */
         public function getColor(): string
         {
-            return $this->rules->cardColor($this);
+            return $this->color;
         }
 
         /**
@@ -47,7 +53,7 @@
          */
         public function getValue(): int
         {
-            return $this->rules->cardValue($this);
+            return $this->value;
         }
 
         /**
@@ -57,7 +63,7 @@
          */
         public function getSuit(): string
         {
-            return $this->suit;
+            return $this->isJoker() ? 'any' : $this->suit;
         }
 
         /**
@@ -68,6 +74,16 @@
         public function getName(): string
         {
             return $this->name;
+        }
+
+        /**
+         * Checks if the card is a Joker
+         *
+         * @return bool
+         */
+        public function isJoker(): bool
+        {
+            return $this->name === 'Joker';
         }
 
         /**

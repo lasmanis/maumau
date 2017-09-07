@@ -1,5 +1,9 @@
 <?php
-    namespace MauMau;
+    namespace MauMau\CardGame\MauMau;
+
+    use MauMau\CardGame\DeckOfCards;
+    use MauMau\CardGame\AbstractRules;
+    use MauMau\Generic\DisplayInterface;
 
     /**
     * Player class.
@@ -12,7 +16,7 @@
         private $strategy;
         private $display;
 
-        public function __construct(string $name, Rules $rules, PlayerStrategy $strategy, Display $display)
+        public function __construct(string $name, AbstractRules $rules, PlayerStrategy $strategy, DisplayInterface $display)
         {
             $this->name = $name;
             $this->rules = $rules;

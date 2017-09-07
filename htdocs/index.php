@@ -2,13 +2,13 @@
     require_once('..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoload.php');
 
     // Get the Display class
-    $display = new \MauMau\Display();
+    $display = new \MauMau\Generic\Display();
 
     // Get the game rules
-    $rules = new \MauMau\Rules();
+    $rules = new \MauMau\CardGame\MauMau\Rules();
 
     // Initialize the Deck of Cards
-    $deck = new \MauMau\DeckOfCards($rules);
+    $deck = new \MauMau\CardGame\DeckOfCards($rules);
     try {
         $deck->init();
     } catch (Exception $e) {
@@ -18,14 +18,14 @@
     $deck->shuffle();
 
     // Initialize the Game
-    $game = new \MauMau\Game($rules, $deck, $display);
+    $game = new \MauMau\CardGame\MauMau\Game($rules, $deck, $display);
 
     // Setup the Players
-    $strategy = new \MauMau\PlayerStrategy($rules);
+    $strategy = new \MauMau\CardGame\MauMau\PlayerStrategy($rules);
     $playerNames = ['Alice', 'Bob', 'Carol', 'Eve'];
     foreach ($playerNames as $playerName) {
         try {
-            $game->join(new \MauMau\Player($playerName, $rules, $strategy, $display));
+            $game->join(new \MauMau\CardGame\MauMau\Player($playerName, $rules, $strategy, $display));
             echo $playerName . ' joined.' . "\n";
         } catch (Exception $e) {
             echo $playerName . ' could not join game. Reason: ' . $e->getMessage() . "\n";
