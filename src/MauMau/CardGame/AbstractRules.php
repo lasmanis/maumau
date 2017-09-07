@@ -2,7 +2,7 @@
     namespace MauMau\CardGame;
 
     /**
-    * Base Rules class.
+    * AbstractRules class.
     */
     abstract class AbstractRules
     {

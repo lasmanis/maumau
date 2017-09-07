@@ -2,10 +2,8 @@
     namespace MauMau\CardGame\MauMau;
 
     use MauMau\CardGame\AbstractGame;
-    use MauMau\CardGame\AbstractRules;
     use MauMau\CardGame\DeckOfCards;
     use MauMau\CardGame\PlayerInterface;
-    use MauMau\Generic\DisplayInterface;
 
     /**
     * Game class.
@@ -128,7 +126,7 @@
             usleep(50000);
 
             $this->plays++;
-            if ($this->plays % count($this->players) === 0){
+            if ($this->plays % count($this->players) === 0) {
                 $this->rounds++;
             }
         }
@@ -232,7 +230,7 @@
                 $totalCards += count($player->getHand());
             }
 
-            if ($totalCards !== $this->rules->deckSize()){
+            if ($totalCards !== $this->rules->deckSize()) {
                 throw new \Exception("Someone is cheating!!");
             }
         }

@@ -65,27 +65,6 @@
         abstract protected function gameShouldContinue(): bool;
 
         /**
-         * Handles the core logic of the game and runs the game until it's finished.
-         *
-         * @return void
-         */
-        final protected function startGameLoop()
-        {
-            $players = count($this->players);
-            while ($this->gameShouldContinue()) {
-                $this->turnStarted();
-
-                $this->players[$this->activePlayerIndex]->play($this);
-
-                $this->setNextPlayer();
-
-                $this->turnFinished();
-            }
-
-            $this->gameFinished();
-        }
-
-        /**
          * The class constructor.
          *
          * @param AbstractRules $rules
@@ -140,13 +119,43 @@
         }
 
         /**
+         * Handles the core logic of the game and runs the game until it's finished.
+         *
+         * @return void
+         */
+        final protected function startGameLoop()
+        {
+            $players = count($this->players);
+            while ($this->gameShouldContinue()) {
+                $this->turnStarted();
+
+                $this->players[$this->activePlayerIndex]->play($this);
+
+                $this->setNextPlayer();
+
+                $this->turnFinished();
+            }
+
+            $this->gameFinished();
+        }
+
+        /**
          * Starts the game
          *
          * @throws Exception if there are not enough players
          * @return void
          */
-        final public function start()
+        final public function start(array $players)
         {
+            foreach ($players as $player) {
+                try {
+                    $this->join($player);
+                    $this->display->message($player . ' joined.');
+                } catch (\Exception $e) {
+                    $this->display->message($player . ' could not join game. Reason: ' . $e->getMessage());
+                }
+            }
+
             if (!$this->rules->validateNumberOfPlayers(count($this->players))) {
                 throw new \Exception('Not enough players');
             }

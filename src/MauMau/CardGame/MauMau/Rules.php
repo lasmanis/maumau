@@ -49,10 +49,7 @@
         public function pickPlayableCards(DeckOfCards $playingStack, DeckOfCards $playerHand): DeckOfCards
         {
             $playableCards = new DeckOfCards($this);
-
             $playingStackCards = $playingStack->getCards();
-            $playerHandCards = $playerHand->getCards();
-
             $topCard = $playingStackCards[0];
 
             // Check all the player's cards and compare them to the top card of the playing stack.

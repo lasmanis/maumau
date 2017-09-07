@@ -15,11 +15,12 @@
         protected $value;
 
         /**
-         * Creates a new card.
+         * The class constructor.
          *
          * @param string $suit
          * @param string $name
-         * @throws InvalidCardException
+         * @param AbstractRules $rules
+         * @throws Exception if card is not validated
          * @return Card
          */
         public function __construct(string $suit, string $name, AbstractRules $rules)
@@ -93,8 +94,11 @@
          */
         public function __toString(): string
         {
-            $displayName = "";
+            if ($this->isJoker()) {
+                return $this->name;
+            }
 
+            $displayName = "";
             switch ($this->suit) {
                 case 'hearts':
                     $displayName = "\u{2665}";
@@ -110,12 +114,9 @@
                     break;
 
                 default:
-                    $displayName = "invalid card";
-                    return $displayName;
+                    return "invalid card";
             }
 
-            $displayName .= $this->name;
-
-            return $displayName;
+            return $displayName .= $this->name;
         }
     }

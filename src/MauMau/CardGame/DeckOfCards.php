@@ -10,6 +10,12 @@
         protected $rules;
         protected $position = 0;
 
+        /**
+         * The class constructor
+         *
+         * @param AbstractRules $rules
+         * @return DeckOfCards
+         */
         public function __construct(AbstractRules $rules)
         {
             $this->rules = $rules;
@@ -40,7 +46,7 @@
         /**
          * Populates a deck based on an existing one.
          *
-         * @param DeckOfCards$existingDeck
+         * @param DeckOfCards $existingDeck
          * @return void
          */
         public function populate(DeckOfCards $existingDeck)
@@ -49,8 +55,9 @@
         }
 
         /**
-         * Returns the deck's card.
-         * @return type
+         * Returns the deck's cards.
+         *
+         * @return array
          */
         public function getCards(): array
         {
@@ -138,8 +145,10 @@
 
         /**
          * Removes a particular card from
+         *
          * @param Card $card
-         * @return type
+         * @throws Exception when card is not found
+         * @return void
          */
         public function removeCard(Card $card)
         {
