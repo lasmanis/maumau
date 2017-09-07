@@ -15,10 +15,15 @@
          */
         public function message(string $message, bool $newLine = true)
         {
+            $cli = php_sapi_name() === "cli"; // Check for command line mode
             if ($newLine) {
-                $message .= "\n";
+                $message .=  $cli ? PHP_EOL : '<br>';
             }
 
-            fwrite(STDOUT, $message);
+            if ($cli) {
+                fwrite(STDOUT, $message);
+            } else {
+                echo $message;
+            }
         }
     }
