@@ -1,40 +1,28 @@
 <?php
     require_once('..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoload.php');
 
-    // Get the Display class
-    $display = new \MauMau\Generic\Display();
+    // Get the Display object
+    $display = \MauMau\CardGame\MauMau\GameFactory::createDisplay();
 
     // Get the game rules
-    $rules = new \MauMau\CardGame\MauMau\Rules();
+    $rules = \MauMau\CardGame\MauMau\GameFactory::createRules();
 
-    // Initialize the Deck of Cards
-    $deck = new \MauMau\CardGame\DeckOfCards($rules);
-    try {
-        $deck->init();
-    } catch (Exception $e) {
-        echo 'Could not initialize deck. Exiting...';
-        exit;
-    }
-    $deck->shuffle();
+    // Get the Deck
+    $deck = \MauMau\CardGame\MauMau\GameFactory::createDeck($rules);
 
-    // Initialize the Game
-    $game = new \MauMau\CardGame\MauMau\Game($rules, $deck, $display);
+    // Finally, get the game
+    $game = \MauMau\CardGame\MauMau\GameFactory::createGame($rules, $deck, $display);
 
-    // Setup the Players
-    $strategy = new \MauMau\CardGame\MauMau\PlayerStrategy($rules);
+    // Get the players
     $playerNames = ['Alice', 'Bob', 'Carol', 'Eve'];
-    foreach ($playerNames as $playerName) {
-        try {
-            $game->join(new \MauMau\CardGame\MauMau\Player($playerName, $rules, $strategy, $display));
-            echo $playerName . ' joined.' . "\n";
-        } catch (Exception $e) {
-            echo $playerName . ' could not join game. Reason: ' . $e->getMessage() . "\n";
-        }
+    $players = [];
+    foreach ($playerNames as $name) {
+        $players[] = \MauMau\CardGame\MauMau\GameFactory::createPlayer($name, $rules, $display);
     }
 
     // Start the Game
     try {
-        $game->start();
+        $game->start($players);
     } catch (Exception $e) {
         echo "Failed to start the Game. Reason: " . $e->getMessage() . "\n";
     }
