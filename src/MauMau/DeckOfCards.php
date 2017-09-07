@@ -24,8 +24,8 @@
         {
             $this->cards = [];
 
-            foreach ($this->rules::ALLOWED_SUITS as $suite) {
-                foreach ($this->rules::ALLOWED_NAMES as $name) {
+            foreach ($this->rules->getAllowedSuits() as $suite) {
+                foreach ($this->rules->getAllowedNames() as $name) {
                     $this->cards[] = new Card($suite, $name, $this->rules);
                 }
             }

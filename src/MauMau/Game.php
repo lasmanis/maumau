@@ -30,7 +30,7 @@
          */
         public function join(Player $player)
         {
-            if (count($this->players) < $this->rules::MAX_PLAYERS) {
+            if (count($this->players) < $this->rules->getMaxPlayers()) {
                 $this->players[] = $player;
                 return;
             }
@@ -69,7 +69,7 @@
             foreach ($this->players as $player) {
                 $hand = new DeckOfCards($this->rules);
 
-                for ($i = 0; $i < $this->rules::HAND_SIZE; $i++) {
+                for ($i = 0; $i < $this->rules->getHandSize(); $i++) {
                     try {
                         $hand->addCardOnTop($this->drawingStack->drawCardFromTop());
                     } catch (Exception $e) {
@@ -137,7 +137,7 @@
 
                 $this->checkCheats();
 
-                usleep(25000);
+                usleep(50000);
 
                 // Some basic stats
                 $plays++;
@@ -204,7 +204,7 @@
          */
         protected function updatePlayerTurn()
         {
-            if ($this->rules::PLAY === 'CLOCKWISE') {
+            if ($this->rules->getPlay() === 'clockwise') {
                 $this->activePlayerIndex = $this->activePlayerIndex > 0 ? $this->activePlayerIndex - 1 : count($this->players) - 1;
             } else {
                 $this->activePlayerIndex = $this->activePlayerIndex < count($this->players) - 1 ? $this->activePlayerIndex + 1 : 0;

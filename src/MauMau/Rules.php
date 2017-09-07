@@ -6,12 +6,12 @@
     */
     class Rules
     {
-        const ALLOWED_SUITS = ['hearts', 'diamonds', 'spades', 'clubs'];
-        const ALLOWED_NAMES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        const MIN_PLAYERS = 2;
-        const MAX_PLAYERS = 4;
-        const HAND_SIZE = 7;
-        const PLAY = 'CLOCKWISE';
+        private $allowedSuits = ['hearts', 'diamonds', 'spades', 'clubs'];
+        private $allowedNames = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        private $minPlayers = 2;
+        private $maxPlayers = 4;
+        private $handSize = 7;
+        private $play = 'clockwise';
 
         private $allowedMatches = ['suit', 'value'];
 
@@ -28,11 +28,11 @@
          */
         public function validateCard(string $suit, string $name): bool
         {
-            if (!in_array($suit, self::ALLOWED_SUITS)) {
+            if (!in_array($suit, $this->allowedSuits)) {
                 return false;
             }
 
-            if (!in_array($name, self::ALLOWED_NAMES)) {
+            if (!in_array($name, $this->allowedNames)) {
                 return false;
             }
 
@@ -47,9 +47,9 @@
          */
         public function validateNumberOfPlayers(int $players): bool
         {
-            return $players >= self::MIN_PLAYERS &&
-                $players <= self::MAX_PLAYERS &&
-                ($players * self::HAND_SIZE < $this->deckSize());
+            return $players >= $this->minPlayers &&
+                $players <= $this->maxPlayers &&
+                ($players * $this->handSize < $this->deckSize());
         }
 
         /**
@@ -75,7 +75,7 @@
          */
         public function cardValue(Card $card): int
         {
-            $index = array_search($card->getName(), self::ALLOWED_NAMES, true);
+            $index = array_search($card->getName(), $this->allowedNames, true);
             return ++$index;
         }
 
@@ -86,7 +86,7 @@
          */
         public function deckSize(): int
         {
-            return count(self::ALLOWED_NAMES) * count(self::ALLOWED_SUITS);
+            return count($this->allowedNames) * count($this->allowedSuits);
         }
 
         /**
@@ -133,5 +133,65 @@
             }
 
             return false;
+        }
+
+        /**
+         * Return allowed suits array.
+         *
+         * @return array
+         */
+        public function getAllowedSuits(): array
+        {
+            return $this->allowedSuits;
+        }
+
+        /**
+         * Return allowed names array.
+         *
+         * @return array
+         */
+        public function getAllowedNames(): array
+        {
+            return $this->allowedNames;
+        }
+
+        /**
+         * Return min allowed players.
+         *
+         * @return int
+         */
+        public function getMinPlayers(): int
+        {
+            return $this->minPlayers;
+        }
+
+        /**
+         * Return max allowed players.
+         *
+         * @return int
+         */
+        public function getMaxPlayers(): int
+        {
+            return $this->maxPlayers;
+        }
+
+        /**
+         * Return hand size.
+         *
+         * @return int
+         */
+        public function getHandSize(): int
+        {
+            return $this->handSize;
+        }
+
+        /**
+         * Return play order.
+         *
+         * @return string
+         */
+        public function getPlay(): string
+        {
+            return $this->play;
         }
     }
