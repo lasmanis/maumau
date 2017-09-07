@@ -78,8 +78,8 @@
                 for ($i = 0; $i < $this->rules->getHandSize(); $i++) {
                     try {
                         $hand->addCardOnTop($this->drawingStack->drawCardFromTop());
-                    } catch (Exception $e) {
-                        throw new Exception("Could not deal for player " . $player . ". " . $e->getMessage());
+                    } catch (\Exception $e) {
+                        throw new \Exception("Could not deal for player " . $player . ". " . $e->getMessage());
                     }
                 }
 
@@ -98,8 +98,8 @@
             $this->playingStack = new DeckOfCards($this->rules);
             try {
                 $topCard = $this->drawingStack->drawCardFromTop();
-            } catch (Exception $e) {
-                throw new Exception("Not enough cards left.");
+            } catch (\Exception $e) {
+                throw new \Exception("Not enough cards left.");
             }
 
             $this->playingStack->addCardOnTop($topCard);
@@ -225,7 +225,7 @@
             }
 
             if ($totalCards !== $this->rules->deckSize()){
-                throw new Exception("Someone is cheating!!");
+                throw new \Exception("Someone is cheating!!");
             }
         }
     }
