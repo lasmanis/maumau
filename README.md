@@ -7,4 +7,4 @@
 
 ### How do I get set up? ###
 
-* Just fire up the start.php file
+* Just run the htdocs/index.php file trough the command line
