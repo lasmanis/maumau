@@ -24,5 +24,5 @@
     try {
         $game->start($players);
     } catch (Exception $e) {
-        echo "Failed to start the Game. Reason: " . $e->getMessage() . "\n";
+        $display->message("Failed to start the Game. Reason: " . $e->getMessage());
     }

@@ -15,9 +15,10 @@
          */
         public function message(string $message, bool $newLine = true)
         {
-            echo $message;
             if ($newLine) {
-                echo "\n";
+                $message .= "\n";
             }
+
+            fwrite(STDOUT, $message);
         }
     }
