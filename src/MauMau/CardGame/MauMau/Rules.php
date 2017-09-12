@@ -71,11 +71,11 @@
          */
         public function cardsMatch(Card $cardToTest, Card $cardToCompare): bool
         {
-            foreach ($this->allowedMatches as $match) {
-                if ($cardToTest->isJoker() || $cardToCompare->isJoker()) {
-                    return true;
-                }
+            if ($cardToTest->isJoker() || $cardToCompare->isJoker()) {
+                return true;
+            }
 
+            foreach ($this->allowedMatches as $match) {
                 $method = 'get'.ucfirst($match);
                 if (method_exists($cardToTest, $method) && $cardToTest->{$method}() === $cardToCompare->{$method}()) {
                     return true;
