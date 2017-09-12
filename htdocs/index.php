@@ -1,5 +1,5 @@
 <?php
-    require_once('..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoload.php');
+    require_once(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoload.php');
 
     // Get the Display object
     $display = \MauMau\CardGame\MauMau\GameFactory::createDisplay();
