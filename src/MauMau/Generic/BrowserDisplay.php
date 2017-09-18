@@ -4,7 +4,7 @@
     /**
     * Display class.
     */
-    class Display implements DisplayInterface
+    class BrowserDisplay implements DisplayInterface
     {
         /**
          * Prints a message.
@@ -15,15 +15,10 @@
          */
         public function message(string $message, bool $newLine = true)
         {
-            $cli = php_sapi_name() === "cli"; // Check for command line mode
             if ($newLine) {
-                $message .=  $cli ? PHP_EOL : '<br>';
+                $message .= '<br>';
             }
 
-            if ($cli) {
-                fwrite(STDOUT, $message);
-            } else {
-                echo $message;
-            }
+            echo $message;
         }
     }

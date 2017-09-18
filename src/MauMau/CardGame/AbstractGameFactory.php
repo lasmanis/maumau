@@ -2,7 +2,8 @@
     namespace MauMau\CardGame;
 
     use MauMau\Generic\DisplayInterface;
-    use MauMau\Generic\Display;
+    use MauMau\Generic\BrowserDisplay;
+    use MauMau\Generic\CLIDisplay;
 
     /**
      * AbstractGameFactory class
@@ -16,7 +17,11 @@
          */
         public static function createDisplay(): DisplayInterface
         {
-            return new Display();
+            if (php_sapi_name() === "cli") {
+                return new CLIDisplay();
+            } else {
+                return new BrowserDisplay();
+            }
         }
 
         /**
