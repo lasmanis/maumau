@@ -32,7 +32,7 @@
          */
         public static function createDeck(AbstractRules $rules): DeckOfCards
         {
-            $deck = new \MauMau\CardGame\DeckOfCards($rules);
+            $deck = new DeckOfCards($rules);
             $deck->init();
             $deck->shuffle();
 

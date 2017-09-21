@@ -16,7 +16,7 @@
         public function message(string $message, bool $newLine = true)
         {
             if ($newLine) {
-                $message .=  PHP_EOL;
+                $message .= PHP_EOL;
             }
 
             fwrite(STDOUT, $message);

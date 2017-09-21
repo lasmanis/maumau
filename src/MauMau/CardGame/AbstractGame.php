@@ -70,7 +70,6 @@
          * @param AbstractRules $rules
          * @param DeckOfCards $deck
          * @param DisplayInterface $display
-         * @return AbstractGame
          */
         public function __construct(AbstractRules $rules, DeckOfCards $deck, DisplayInterface $display)
         {
@@ -84,8 +83,8 @@
         /**
          * Adds a player to the players array.
          *
-         * @param Player $player
-         * @throws Exception If max number of players is reached.
+         * @param PlayerInterface $player
+         * @throws \Exception If max number of players is reached.
          * @return void
          */
         public function join(PlayerInterface $player)
@@ -125,7 +124,6 @@
          */
         final protected function startGameLoop()
         {
-            $players = count($this->players);
             while ($this->gameShouldContinue()) {
                 $this->turnStarted();
 
@@ -142,7 +140,8 @@
         /**
          * Starts the game
          *
-         * @throws Exception if there are not enough players
+         * @param array $players
+         * @throws \Exception if there are not enough players
          * @return void
          */
         final public function start(array $players)

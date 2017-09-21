@@ -20,8 +20,7 @@
          * @param string $suit
          * @param string $name
          * @param AbstractRules $rules
-         * @throws Exception if card is not validated
-         * @return Card
+         * @throws \Exception if card is not validated
          */
         public function __construct(string $suit, string $name, AbstractRules $rules)
         {

@@ -12,6 +12,11 @@
     {
         protected $rules;
 
+        /**
+         * PlayerStrategy constructor.
+         *
+         * @param AbstractRules $rules
+         */
         public function __construct(AbstractRules $rules)
         {
             $this->rules = $rules;

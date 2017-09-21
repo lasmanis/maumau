@@ -1,8 +1,6 @@
 <?php
     namespace MauMau\CardGame;
 
-    use MauMau\CardGame\DeckOfCards;
-
     /**
     * Player Interface.
     */

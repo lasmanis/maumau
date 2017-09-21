@@ -12,7 +12,7 @@
         protected $maxPlayers = 4;
         protected $handSize = 7;
         protected $play = 'clockwise';
-        protected $jockers = 2;
+        protected $jokers = 2;
 
         /**
          * Gets the proper card value based on the name.
