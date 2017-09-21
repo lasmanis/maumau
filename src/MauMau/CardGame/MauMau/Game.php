@@ -18,8 +18,8 @@
         /**
          * Adds a player to the players array.
          *
-         * @param Player $player
-         * @throws Exception If max number of players is reached.
+         * @param PlayerInterface $player
+         * @throws \Exception If max number of players is reached.
          * @return void
          */
         public function join(PlayerInterface $player)
@@ -47,7 +47,7 @@
         /**
          * Deals a hand of cards to each player, based on the rules.
          *
-         * @throws Exception If there are not enough cards left.
+         * @throws \Exception If there are not enough cards left.
          * @return void
          */
         protected function deal()
@@ -71,7 +71,7 @@
         /**
          * Sets the playing stack. Where players will play their cards.
          *
-         * @throws Exception if there are not enough cards left.
+         * @throws \Exception if there are not enough cards left.
          * @return void
          */
         protected function setPlayingStack()
@@ -172,7 +172,7 @@
         /**
          * Checks to see if there is a winner
          *
-         * @return type
+         * @return bool
          */
         protected function weHaveAWinner(): bool
         {
@@ -223,6 +223,12 @@
             }
         }
 
+        /**
+         * Checks if the number of total cards in the game no longer match the original deck size.
+         *
+         * @throws \Exception when the condition is violated.
+         * @return void
+         */
         protected function checkCheats()
         {
             $totalCards = count($this->playingStack) + count($this->drawingStack);

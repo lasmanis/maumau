@@ -44,7 +44,6 @@
          * @param AbstractRules $rules
          * @param PlayerStrategyInterface $strategy
          * @param DisplayInterface $display
-         * @return AbstractPlayer
          */
         public function __construct(string $name, AbstractRules $rules, PlayerStrategyInterface $strategy, DisplayInterface $display)
         {

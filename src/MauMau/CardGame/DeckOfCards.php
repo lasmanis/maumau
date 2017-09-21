@@ -99,6 +99,7 @@
         /**
          * Draw card from top of deck.
          *
+         * @throws \Exception If deck is empty.
          * @return Card
          */
         public function drawCardFromTop(): Card
@@ -113,6 +114,7 @@
         /**
          * Draw card from bottom of deck.
          *
+         * @throws \Exception If deck is empty.
          * @return Card
          */
         public function drawCardFromBottom(): Card
@@ -127,6 +129,7 @@
         /**
          * Draw a random card from the deck.
          *
+         * @throws \Exception If deck is empty.
          * @return Card
          */
         public function drawRandomCard(): Card
@@ -147,7 +150,7 @@
          * Removes a particular card from
          *
          * @param Card $card
-         * @throws Exception when card is not found
+         * @throws \Exception when card is not found
          * @return void
          */
         public function removeCard(Card $card)
