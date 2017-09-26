@@ -8,4 +8,12 @@ class BrowserDisplayTest extends DisplayTestBase
     {
         $this->display = new BrowserDisplay();
     }
+
+    /**
+     * @covers \MauMau\Generic\BrowserDisplay::message
+     */
+    public function testSimpleMessage()
+    {
+        parent::testSimpleMessage();
+    }
 }
