@@ -48,10 +48,28 @@ class DeckOfCardsTest extends TestCase
         ];
     }
 
-    public function testAddCardOnBottomAndPopulate()
+    public function testPopulateWithDeck()
     {
         $this->emptyDeck->populate($this->normalDeck);
         $this->assertEquals($this->emptyDeck->getCards(), $this->normalDeck->getCards());
+    }
+
+    public function testPopulateWithInvalidObject()
+    {
+        $this->expectException('\\InvalidArgumentException');
+        $this->emptyDeck->populate(new \stdClass());
+    }
+
+    public function testPopulateWithInvalidArray()
+    {
+        $this->emptyDeck->populate([new Card('hearts', '2', $this->rules), 5]);
+        $this->assertEquals(1, $this->emptyDeck->count());
+    }
+
+    public function testPopulateWithArray()
+    {
+        $this->emptyDeck->populate($this->getSampleCards());
+        $this->assertEquals($this->emptyDeck->getCards(), $this->getSampleCards());
     }
 
     public function testShuffle()
