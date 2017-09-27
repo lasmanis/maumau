@@ -3,7 +3,6 @@
 namespace MauMau\CardGame;
 
 use PHPUnit\Framework\TestCase;
-use Mockery;
 
 class CardTest extends TestCase
 {
