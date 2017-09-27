@@ -252,6 +252,16 @@
         }
 
         /**
+         * Clears the deck.
+         *
+         * @return void
+         */
+        public function clear()
+        {
+            $this->cards = [];
+        }
+
+        /**
          * Returns the full deck in one row.
          *
          * @return string

@@ -163,6 +163,12 @@ class DeckOfCardsTest extends TestCase
         $this->assertEquals($this->emptyDeck->key(), $this->emptyDeck->count());
     }
 
+    public function testClearDeck()
+    {
+        $this->normalDeck->clear();
+        $this->assertTrue($this->normalDeck->isEmpty());
+    }
+
     public function testToString()
     {
         $this->assertNotEmpty($this->normalDeck);
