@@ -1,6 +1,8 @@
 <?php
     namespace MauMau\CardGame;
 
+    use Prophecy\Exception\InvalidArgumentException;
+
     /**
     * DeckOfCards class.
     */
@@ -46,12 +48,27 @@
         /**
          * Populates a deck based on an existing one.
          *
-         * @param DeckOfCards $existingDeck
+         * @param mixed DeckOfCards|array $existingDeck
+         * @throws InvalidArgumentException
          * @return void
          */
-        public function populate(DeckOfCards $existingDeck)
+        public function populate($existingDeck)
         {
-            $this->cards = $existingDeck->getCards();
+            if (is_object($existingDeck) && get_class($existingDeck) === DeckOfCards::class) {
+                $this->cards = $existingDeck->getCards();
+                return;
+            }
+
+            if (is_array($existingDeck)) {
+                $cards = array_filter($existingDeck, function($card){
+                    return is_object($card) && get_class($card) === Card::class;
+                });
+
+                $this->cards = $cards;
+                return;
+            }
+
+            throw new InvalidArgumentException();
         }
 
         /**
@@ -232,6 +249,16 @@
         public function valid(): bool
         {
             return isset($this->cards[$this->position]);
+        }
+
+        /**
+         * Clears the deck.
+         *
+         * @return void
+         */
+        public function clear()
+        {
+            $this->cards = [];
         }
 
         /**

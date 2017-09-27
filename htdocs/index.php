@@ -1,23 +1,25 @@
 <?php
-    require_once(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'autoload.php');
+    require_once(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
+
+    use \MauMau\CardGame\MauMau\GameFactory;
 
     // Get the Display object
-    $display = \MauMau\CardGame\MauMau\GameFactory::createDisplay();
+    $display = GameFactory::createDisplay();
 
     // Get the game rules
-    $rules = \MauMau\CardGame\MauMau\GameFactory::createRules();
+    $rules = GameFactory::createRules();
 
     // Get the Deck
-    $deck = \MauMau\CardGame\MauMau\GameFactory::createDeck($rules);
+    $deck = GameFactory::createDeck($rules);
 
     // Finally, get the game
-    $game = \MauMau\CardGame\MauMau\GameFactory::createGame($rules, $deck, $display);
+    $game = GameFactory::createGame($rules, $deck, $display);
 
     // Get the players
     $playerNames = ['Alice', 'Bob', 'Carol', 'Eve'];
     $players = [];
     foreach ($playerNames as $name) {
-        $players[] = \MauMau\CardGame\MauMau\GameFactory::createPlayer($name, $rules, $display);
+        $players[] = GameFactory::createPlayer($name, $rules, $display);
     }
 
     // Start the Game

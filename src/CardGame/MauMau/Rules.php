@@ -25,7 +25,7 @@
                 return 0;
             }
             $index = array_search($card->getName(), $this->allowedNames, true);
-            return ++$index;
+            return $index+2;
         }
 
         /**
