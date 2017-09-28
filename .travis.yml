@@ -7,7 +7,6 @@ install:
 - travis_retry composer install --no-interaction
 
 before_script:
-- mkdir -p build/cov
 - mkdir -p build/logs
 
 after_success:
