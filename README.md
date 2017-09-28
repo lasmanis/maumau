@@ -1,4 +1,6 @@
-# MauMau Demo [![Build Status](https://travis-ci.org/lasmanis/maumau.svg?branch=master)](https://travis-ci.org/lasmanis/maumau)
+# MauMau Demo #
+
+[![Build Status](https://travis-ci.org/lasmanis/maumau.svg?branch=master)](https://travis-ci.org/lasmanis/maumau) [![Coverage Status](https://coveralls.io/repos/github/lasmanis/maumau/badge.svg?branch=master)](https://coveralls.io/github/lasmanis/maumau?branch=master)
 
 ### What it is ###
 
