@@ -5,3 +5,9 @@ php:
 
 install:
 - travis_retry composer install --no-interaction
+
+before_script:
+- mkdir -p build/cov
+
+after_success:
+- travis_retry php vendor/bin/coveralls
