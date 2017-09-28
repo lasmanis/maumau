@@ -8,6 +8,7 @@ install:
 
 before_script:
 - mkdir -p build/cov
+- mkdir -p build/logs
 
 after_success:
 - travis_retry php vendor/bin/coveralls
