@@ -51,6 +51,7 @@ class GameFactoryTest extends TestCase
         );
 
         $this->assertInstanceOf(AbstractPlayer::class, $player);
+        $this->assertEquals('Eve', (string)$player);
     }
 
     public function testCreateGame()
