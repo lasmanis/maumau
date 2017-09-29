@@ -4,6 +4,7 @@
     use MauMau\Generic\DisplayInterface;
     use MauMau\Generic\BrowserDisplay;
     use MauMau\Generic\CLIDisplay;
+    use Psr\Log\InvalidArgumentException;
 
     /**
      * AbstractGameFactory class
@@ -52,6 +53,7 @@
          * @param string $name
          * @param AbstractRules $rules
          * @param DisplayInterface $display
+         * @throws InvalidArgumentException if name is empty
          * @return AbstractPlayer
          */
         abstract public static function createPlayer(string $name, AbstractRules $rules, DisplayInterface $display): AbstractPlayer;
