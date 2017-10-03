@@ -2,6 +2,7 @@
     namespace MauMau\CardGame;
 
     use MauMau\Generic\DisplayInterface;
+    use Psr\Log\InvalidArgumentException;
 
     /**
     * Abstract Player class.
@@ -44,9 +45,14 @@
          * @param AbstractRules $rules
          * @param PlayerStrategyInterface $strategy
          * @param DisplayInterface $display
+         * @throws InvalidArgumentException If name is empty.
          */
         public function __construct(string $name, AbstractRules $rules, PlayerStrategyInterface $strategy, DisplayInterface $display)
         {
+            if (empty($name)) {
+                throw new \InvalidArgumentException('Player\'s name cannot be empty.');
+            }
+
             $this->name = $name;
             $this->rules = $rules;
             $this->strategy = $strategy;

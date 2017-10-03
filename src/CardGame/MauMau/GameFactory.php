@@ -7,6 +7,7 @@
     use MauMau\CardGame\AbstractPlayer;
     use MauMau\CardGame\AbstractGame;
     use MauMau\CardGame\AbstractGameFactory;
+    use Psr\Log\InvalidArgumentException;
 
     /**
      * GameFactory class
@@ -29,6 +30,7 @@
          * @param string $name
          * @param AbstractRules $rules
          * @param DisplayInterface $display
+         * @throws InvalidArgumentException if name is empty
          * @return AbstractPlayer
          */
         public static function createPlayer(string $name, AbstractRules $rules, DisplayInterface $display): AbstractPlayer

@@ -11,7 +11,7 @@
          *
          * @param string $message
          * @param bool $newLine (optional) Finish with a new line.
-         * @return void
+         * @return mixed
          */
         public function message(string $message, bool $newLine = true)
         {
@@ -20,5 +20,7 @@
             }
 
             echo $message;
+
+            return true;
         }
     }

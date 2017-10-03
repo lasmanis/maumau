@@ -11,7 +11,7 @@
          *
          * @param string $message
          * @param bool $newLine (optional) Finish with a new line.
-         * @return void
+         * @return mixed Number of bytes written by fwrite, or false in case of failure.
          */
         public function message(string $message, bool $newLine = true)
         {
@@ -19,6 +19,6 @@
                 $message .= PHP_EOL;
             }
 
-            fwrite(STDOUT, $message);
+            return fwrite(STDOUT, $message);
         }
     }
