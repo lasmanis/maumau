@@ -24,7 +24,9 @@
 
     // Start the Game
     try {
-        $game->start($players);
+        $game->joinPlayers($players);
+        $game->init();
+        $game->startGameLoop();
     } catch (Exception $e) {
         $display->message("Failed to start the Game. Reason: " . $e->getMessage());
     }

@@ -14,13 +14,9 @@
         protected $display;
         protected $players;
         protected $activePlayerIndex = 0;
-
-        /**
-         * Perform any environment initializations needed.
-         *
-         * @return void
-         */
-        abstract protected function initEnvironment();
+        protected $msTurnDelay = 50000;
+        protected $rounds = 0;
+        protected $safety = 100;
 
         /**
          * Allows the concrete game to perform any logic upon the start of a turn.
@@ -65,6 +61,50 @@
         abstract protected function gameShouldContinue(): bool;
 
         /**
+         * Checks if the number of total cards in the game no longer match the original deck size.
+         *
+         * @throws \Exception when the condition is violated.
+         * @return void
+         */
+        abstract public function checkCheats();
+
+        /**
+         * Checks if the cards are properly dealt.
+         *
+         * @return bool
+         */
+        abstract public function cardsAreDealt(): bool;
+
+        /**
+         * Checks if one of the players is the winner.
+         *
+         * @return bool
+         */
+        abstract public function weHaveAWinner(): bool;
+
+        /**
+         * Picks the player that will start the game.
+         *
+         * @return void
+         */
+        abstract protected function pickFirstPlayer();
+
+        /**
+         * Deals a hand of cards to each player, based on the rules.
+         *
+         * @throws \Exception If there are not enough cards left.
+         * @return void
+         */
+        abstract protected function deal();
+
+        /**
+         * Makes sure to reshuffle the decks accordingly in case it is deemed necessary throughout the game.
+         *
+         * @return void
+         */
+        abstract public function reshuffleDecks();
+
+        /**
          * The class constructor.
          *
          * @param AbstractRules $rules
@@ -87,7 +127,7 @@
          * @throws \Exception If max number of players is reached.
          * @return void
          */
-        public function join(PlayerInterface $player)
+        protected function join(PlayerInterface $player)
         {
             if (count($this->players) < $this->rules->getMaxPlayers()) {
                 $this->players[] = $player;
@@ -118,11 +158,31 @@
         }
 
         /**
+         * Return the number of players that joined the game.
+         *
+         * @return int
+         */
+        public function getNumberOfPlayers(): int
+        {
+            return is_array($this->players) ? count($this->players) : 0;
+        }
+
+        /**
+         * Return the array index of the active player; ie. the player whose turn is to play.
+         *
+         * @return int
+         */
+        public function getActivePlayerIndex(): int
+        {
+            return $this->activePlayerIndex;
+        }
+
+        /**
          * Handles the core logic of the game and runs the game until it's finished.
          *
          * @return void
          */
-        final protected function startGameLoop()
+        final public function startGameLoop()
         {
             while ($this->gameShouldContinue()) {
                 $this->turnStarted();
@@ -138,28 +198,46 @@
         }
 
         /**
-         * Starts the game
+         * Joins a group of players to the game.
          *
          * @param array $players
-         * @throws \Exception if there are not enough players
-         * @return void
+         * @throws \Exception if the number of players is invalid.
          */
-        final public function start(array $players)
+        final public function joinPlayers(array $players)
         {
             foreach ($players as $player) {
-                try {
-                    $this->join($player);
-                    $this->display->message($player . ' joined.');
-                } catch (\Exception $e) {
-                    $this->display->message($player . ' could not join game. Reason: ' . $e->getMessage());
-                }
+                $this->join($player);
+                $this->display->message($player . ' joined.');
             }
 
             if (!$this->rules->validateNumberOfPlayers(count($this->players))) {
                 throw new \Exception('Not enough players');
             }
+        }
 
-            $this->initEnvironment();
-            $this->startGameLoop();
+        /**
+         * Initializes the game environment.
+         *
+         * @param int $msTurnDelay
+         * @return void
+         */
+        public function init(int $msTurnDelay = null)
+        {
+            if (!is_null($msTurnDelay)) {
+                $this->msTurnDelay = $msTurnDelay;
+            }
+
+            $this->deal();
+            $this->pickFirstPlayer();
+        }
+
+        /**
+         * Checks if the safety limit for the maximum number of allowed rounds has been reached.
+         *
+         * @return bool
+         */
+        public function roundLimitReached(): bool
+        {
+            return $this->rounds >= $this->safety;
         }
     }
