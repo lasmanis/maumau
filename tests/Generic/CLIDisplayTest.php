@@ -14,7 +14,9 @@ class CLIDisplayTest extends DisplayTestBase
      */
     public function testSimpleMessage()
     {
+        $os = php_uname();
+        $newLineBytes = substr($os, 0, strlen('Windows')) === 'Windows' ? 2 : 1;
         $res = $this->display->message('');
-        $this->assertEquals(2, $res);
+        $this->assertEquals($newLineBytes, $res);
     }
 }
